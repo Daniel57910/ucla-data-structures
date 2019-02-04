@@ -1,0 +1,22 @@
+{
+  "name": "ucla-data-structures",
+  "version": "1.0.0",
+  "description": "ucla data structures solutions and tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daniel57910/ucla-data-structures.git"
+  },
+  "author": "Daniel Miller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Daniel57910/ucla-data-structures/issues"
+  },
+  "homepage": "https://github.com/Daniel57910/ucla-data-structures#readme",
+  "dependencies": {
+    "jest": "^24.0.0"
+  }
+}
