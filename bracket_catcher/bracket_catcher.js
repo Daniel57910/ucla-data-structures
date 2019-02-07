@@ -1,21 +1,33 @@
 class BracketCatcher {
 
-  constructor(text) {
-    this.text = text
-    this.stack = []
+  constructor() {
+    this.text 
+    this.open = []
     this.functions = {"{": "}", "[": "]", "(": ")"}
   }
 
-  returnStack() {
-    return this.stack
+  init(text) {
+    this.text = text
   }
 
-  createStack() {
-    for (let i = 0; i < this.text.length; i++) {
+  solve() {
+    for (let i in this.text) {
+      //If open bracket exists
       if (this.text[i] in this.functions) {
-        this.stack.push(new Bracket(this.text[i], i + 1))
+        this.open.push(new Bracket(this.text[i], i + 1))
+      }
+      //If closed bracket exists
+      if (Object.values(this.functions).includes(this.text[i])) {
+        let current = this.open.pop()
+        if (this.functions[current.char] != this.text[i]) {
+          return 'BAD'
+        }
       }
     }
+    if (!this.open.length) {
+      return 'Success'
+    }
+
   }
 
 }
