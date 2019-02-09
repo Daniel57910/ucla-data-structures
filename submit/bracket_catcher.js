@@ -20,7 +20,7 @@ class BracketCatcher {
       //If closed bracket exists
       if (closed.includes(this.text[i])) {
         if (!this.open.length) return i + 1
-        
+
         let current = this.open.pop()
         if (this.functions[current.char] != this.text[i]) {
           return i + 1
@@ -60,3 +60,6 @@ r1.on('line', (line) => {
   console.log(bracketCatcher.solve())
   r1.close()
 })
+
+
+module.exports = BracketCatcher
