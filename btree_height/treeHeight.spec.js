@@ -1,26 +1,27 @@
 const HeightCalculator = require(`./treeHeight`)
 
 
-// describe(`tree Height calculator`, () => {
-//   beforeEach(() => {
-//     indexes = [4, -1, 4, 1, 1]
-//     locations = [3, 4, 0, 2]
-//     heightCalculator = new HeightCalculator(indexes)
-//     heightCalculator.init()
-//   })
-//   test(`initialising the index calculator with an array of integers`, () => {
-//     for (let i = 0; i < indexes; i++) {
-//       expect(heightCalculator.indexes[i].value).toEqual(locations[i])
-//     }
-//     heightCalculator.build()
-//     let tree = heightCalculator.tree
-//     expect(tree.data).toEqual(1)
-//     expect(tree.left.data).toEqual(3)
-//     expect(tree.right.data).toEqual(4)
-//     expect(tree.right.left.data).toEqual(0)
-//     expect(tree.getHeight(1)).toEqual(3)
-//   })
-// })
+describe(`tree Height calculator`, () => {
+  beforeEach(() => {
+    indexes = [4, -1, 4, 1, 1]
+    locations = [3, 4, 0, 2]
+    heightCalculator = new HeightCalculator(indexes)
+    heightCalculator.init()
+  })
+  test(`initialising the index calculator with an array of integers`, () => {
+    for (let i = 0; i < indexes; i++) {
+      expect(heightCalculator.indexes[i].value).toEqual(locations[i])
+    }
+    heightCalculator.build()
+    let tree = heightCalculator.tree, heights = []
+    expect(tree.data).toEqual(1)
+    expect(tree.left.data).toEqual(3)
+    expect(tree.right.data).toEqual(4)
+    expect(tree.right.left.data).toEqual(0)
+    expect(heightCalculator.height(heightCalculator.tree)).toEqual(3)
+
+  })
+})
 
 
 describe(`tree of 5 nodes w/ depth 4`, () => {
@@ -34,12 +35,12 @@ describe(`tree of 5 nodes w/ depth 4`, () => {
       expect(heightCalculator.indexes[i].value).toEqual(locations[i])
     }  
     heightCalculator.build()
-    let tree = heightCalculator.tree
+    let tree = heightCalculator.tree, heights = []
     expect(tree.data).toEqual(0)
     expect(tree.left.data).toEqual(1)
     expect(tree.right.data).toEqual(3)
     expect(tree.right.left.data).toEqual(4)
     expect(tree.right.left.left.data).toEqual(2)
-    // expect(tree.getHeight(1)).toEqual(4)
+    expect(heightCalculator.height(heightCalculator.tree)).toEqual(4)
   })
 })

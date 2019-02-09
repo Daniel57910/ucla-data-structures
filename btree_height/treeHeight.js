@@ -5,17 +5,13 @@ class Tree {
     this.left = null
     this.right = null
     this.data = data
-    this.trees = []
+    this.height = 1
   }
 
   buildTree(arg) {
     
-    if (!this.left && arg.pos === this.data) {
-      this.left = new Tree(arg.value)
-    }
-
-    else if (!this.right && arg.pos === this.data) {
-      this.right = new Tree(arg.value)
+    if (arg.pos === this.data) {
+      !this.left ? this.left = new Tree(arg.value) : this.right = new Tree(arg.value)
     }
     else {
       if (this.left)  this.left.buildTree(arg)
@@ -26,28 +22,29 @@ class Tree {
   }
 
 
-  getHeight(height) {
+  getHeight(heights) {
 
-    console.log(`current height = ${height}, data => ${this.data}`)
-    if (this.data) {
-      console.log(`current height = ${height}, data => ${this.data}`)
+    /*slower slightly hacky recursive solution*/
 
-      height++
-      if (this.left) {
-        this.left.getHeight(height)
-      }
-      if (this.right) {
-        this.right.getHeight(height)
-      }
+    if (!(this.right && this.left)) {
+      heights.push(this.height)
     }
 
-    else {
-      return height 
+    if (this.left) {
+      this.left.height = 1 + this.height
+      this.left.getHeight(heights)
+    }
+    if (this.right) {
+      this.right.height = 1 + this.height
+      this.right.getHeight(heights)
     }
 
   }
 
+
 }
+
+
 
 class HeightCalculator {
 
@@ -70,8 +67,25 @@ class HeightCalculator {
     }
   }
 
-  height() {
-    return this.tree.getHeight()
+  height(tree) {
+    let nodes = [], max = 0
+    nodes.push(tree)
+
+    while (nodes.length) {
+      let current = nodes.pop()
+      if (current.left) {
+        current.left.height = 1 + current.height
+        nodes.push(current.left)
+      }
+      if (current.right) {
+        current.right.height = 1 + current.height
+        nodes.push(current.right)
+      }
+      if (max < current.height) max = current.height
+    }
+
+    return max
+    
   }
 
 }
