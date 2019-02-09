@@ -56,7 +56,7 @@ class HeightCalculator {
 
   init() {
     for (let i = 0; i < this.data.length; i++) {
-      this.data[i] === -1 ? this.tree = new Tree(i) : this.indexes.push(new TreePos(this.data[i], i))
+      this.data[i] === -1 ? this.tree = new Tree(parseInt(i)) : this.indexes.push(new TreePos(this.data[i], i))
     }
     this.indexes.sort((a, b) => a.pos - b.pos)
   }
@@ -67,25 +67,26 @@ class HeightCalculator {
     }
   }
 
-  height(tree) {
-    let nodes = [], max = 0
-    nodes.push(tree)
+  height() {
+    let height = []
+    this.tree.getHeight(height)
+    return height
+    // let nodes = [], max = 0
+    // nodes.push(this.tree)
+    // while (nodes.length) {
+    //   let current = nodes.pop()
+    //   if (current.left) {
+    //     current.left.height = 1 + current.height
+    //     nodes.push(current.left)
+    //   }
+    //   if (current.right) {
+    //     current.right.height = 1 + current.height
+    //     nodes.push(current.right)
+    //   }
+    //   if (max < current.height) max = current.height
+    // }
 
-    while (nodes.length) {
-      let current = nodes.pop()
-      if (current.left) {
-        current.left.height = 1 + current.height
-        nodes.push(current.left)
-      }
-      if (current.right) {
-        current.right.height = 1 + current.height
-        nodes.push(current.right)
-      }
-      if (max < current.height) max = current.height
-    }
-
-    return max
-    
+    // return max
   }
 
 }
@@ -98,4 +99,26 @@ class TreePos {
 }
 
 
-module.exports = HeightCalculator
+var readline = require('readline');
+
+process.stdin.setEncoding('utf8');
+
+var r1 = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+
+r1.on('line', (line) => {
+  line = line.split(" ").map(int => parseInt(int))
+  if (line.length > 1) {
+    let heightCalculator = new HeightCalculator(line)
+    heightCalculator.init()
+    heightCalculator.build()
+    console.log(heightCalculator.height())
+    r1.close()
+  }
+})
+
+
