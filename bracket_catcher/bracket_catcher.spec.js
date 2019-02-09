@@ -45,3 +45,24 @@ describe(`Bracket catcher testing w/ special characters`, () => {
     expect(bracketCatcher.solve()).toEqual('Success')
    })
 })
+
+describe(`Failed bracket catching`, () => {
+  beforeEach(() => {
+    bracketCatcher = new BracketCatcher()
+  })
+  test(`failing on a closing failed bracket`, () => {
+    bracketCatcher.init(`[[]}]`)
+    expect(bracketCatcher.solve()).toEqual(4)
+  })
+  test(`more complex fail on closed bracket scenario`, () => {
+    let incorrect = `function a = return([[[[[(})]]]]])`
+    bracketCatcher.init(incorrect)
+    expect(bracketCatcher.solve()).toEqual(incorrect.indexOf('}') + 1)
+  })
+  test(`fail on unmatched open bracket`, () => {
+    bracketCatcher.init(`[`)
+    expect(bracketCatcher.solve()).toEqual(1)
+    bracketCatcher.init(`()[`)
+    expect(bracketCatcher.solve()).toEqual(3)
+  })
+})
