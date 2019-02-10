@@ -1,4 +1,3 @@
-
 class Tree {
 
   constructor(data) {
@@ -9,27 +8,20 @@ class Tree {
   }
 
   buildTree(arg) {
-    
-    if (arg.pos === this.data && !(this.left & this.right) {
-      !this.left ? this.left = new Tree(arg.value) : this.right = new Tree(arg.value)
-    }
-    else {
+
+    if (arg.pos === this.data && !(this.left && this.right)) {
+      !this.left ? this.left = new Tree(arg.value): this.right = new Tree(arg.value)
+    } else {
       if (this.left)  this.left.buildTree(arg)
       if (this.right) this.right.buildTree(arg)
     }
-    
-
   }
 
 
-  getHeight(heights) {
-
-    /*slower slightly hacky recursive solution*/
-
+  heightRecur(height) {
     if (!(this.right && this.left)) {
-      heights.push(this.height)
+      height.push(this.height)
     }
-
     if (this.left) {
       this.left.height = 1 + this.height
       this.left.getHeight(heights)
@@ -41,10 +33,7 @@ class Tree {
 
   }
 
-
 }
-
-
 
 class HeightCalculator {
 
@@ -52,11 +41,11 @@ class HeightCalculator {
     this.data = data
     this.indexes = []
     this.tree
-  } 
+  }
 
   init() {
     for (let i = 0; i < this.data.length; i++) {
-      this.data[i] === -1 ? this.tree = new Tree(parseInt(i)) : this.indexes.push(new TreePos(this.data[i], i))
+      this.data[i] === -1 ? this.tree = new Tree(parseInt(i)): this.indexes.push(new TreePos(this.data[i], i))
     }
     this.indexes.sort((a, b) => a.pos - b.pos)
   }
@@ -68,23 +57,19 @@ class HeightCalculator {
   }
 
   height() {
-    let height = []
-    this.tree.getHeight(height)
-    return height
-    let nodes = [], max = 0
-    nodes.push(this.tree)
+    let height = [], nodes = [this.tree], max = 0
     while (nodes.length) {
       let current = nodes.pop()
       if (current.left) {
         current.left.height = 1 + current.height
         nodes.push(current.left)
-       }
+      }
       if (current.right) {
         current.right.height = 1 + current.height
         nodes.push(current.right)
       }
-    if (max < current.height) max = current.height
-   }
+      if (max < current.height) max = current.height
+    }
     return max
   }
 
@@ -96,7 +81,6 @@ class TreePos {
     this.pos = pos
   }
 }
-
 
 var readline = require('readline');
 
