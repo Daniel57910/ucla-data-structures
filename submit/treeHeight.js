@@ -1,3 +1,8 @@
+//https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+//https://www.sitepoint.com/vs-code-extensions-javascript-developers/
+//https://www.sitepoint.com/best-wireframing-tools/
+
+
 class Tree {
 
   constructor(data) {
