@@ -44,19 +44,4 @@ class Bracket {
   }
 }
 
-var readline = require('readline');
-
-process.stdin.setEncoding('utf8');
-
-var r1 = readline.createInterface({
-  input: process.stdin,
-  terminal: false
-});
-
-r1.on('line', (line) => {
-  line = line.toString()
-  let bracketCatcher = new BracketCatcher()
-  bracketCatcher.init(line)
-  console.log(bracketCatcher.solve())
-  r1.close()
-})
+module.exports = BracketCatcher

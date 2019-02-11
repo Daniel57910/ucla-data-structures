@@ -62,7 +62,7 @@ class HeightCalculator {
   }
 
   height() {
-    let height = [], nodes = [this.tree], max = 0
+    let nodes = [this.tree], max = 0
     while (nodes.length) {
       let current = nodes.pop()
       if (current.left) {
