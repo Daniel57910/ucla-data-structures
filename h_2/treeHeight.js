@@ -12,8 +12,8 @@ class Tree {
 
   buildTree(arg) {
 
-    if (!(this.left && this.right)) {
-      !this.left ? this.left = new Tree(arg): this.right = new Tree(arg)
+    if (arg.pos === this.data && !(this.left && this.right)) {
+      !this.left ? this.left = new Tree(arg.value): this.right = new Tree(arg.value)
     } else {
       if (this.left)  this.left.buildTree(arg)
       if (this.right) this.right.buildTree(arg)
@@ -62,22 +62,24 @@ class HeightCalculator {
 
   build() {
     let queue = []
-    queue = queue.concat(this.indexes[this.tree.data])
+    queue = queue.concat((this.indexes[this.tree.data].map(val => new TreePos(this.tree.data, val))))
     let current = queue.shift()
 
     while (current) {
-      console.log(`current going into build -> ${current}`)
-      console.log(`before -> ${queue}`)
+      console.log(`current going into build ->`)
+      console.log(current)
+      console.log(`before ->`)
+      console.log(queue)
       this.tree.buildTree(current)
-      if (this.indexes.hasOwnProperty(current) && this.indexes[current].length) {
-        queue = queue.concat(this.indexes[current])
-        console.log(`after -> ${queue}`)
+
+      if (this.indexes.hasOwnProperty(current.value) && this.indexes[current.value].length) {
+        queue = queue.concat((this.indexes[current.value].map(val => new TreePos(current.value, val))))
+        console.log(`after`)
+        console.log(queue)
       }
       current = queue.shift()
-    
     }
 
-    
   }
     
   height() {
@@ -101,8 +103,8 @@ class HeightCalculator {
 
 class TreePos {
   constructor(pos, value) {
-    this.data = value
     this.pos = pos
+    this.value = value
   }
 }
 
