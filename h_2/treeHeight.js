@@ -66,16 +66,16 @@ class HeightCalculator {
     let current = queue.shift()
 
     while (current) {
-      console.log(`current going into build ->`)
-      console.log(current)
-      console.log(`before ->`)
-      console.log(queue)
+      // console.log(`current going into build ->`)
+      // console.log(current)
+      // console.log(`before ->`)
+      // console.log(queue)
       this.tree.buildTree(current)
 
       if (this.indexes.hasOwnProperty(current.value) && this.indexes[current.value].length) {
         queue = queue.concat((this.indexes[current.value].map(val => new TreePos(current.value, val))))
-        console.log(`after`)
-        console.log(queue)
+        // console.log(`after`)
+        // console.log(queue)
       }
       current = queue.shift()
     }
