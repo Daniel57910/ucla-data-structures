@@ -1,37 +1,38 @@
 //next incorporate assert nodejs into code rather than testing framework
 
+const DebugWriter = require('../debugWriter')
+var pairFile = 'key_value.txt', logFile = 'logs.txt'
+
+var debugWriter = new DebugWriter()
+// debugWriter.dropFile(pairFile)
+// debugWriter.dropFile(logFile)
+
+class Level {
+  constructor(level = 1, leaves) {
+    this.level = level,
+    this.leaves = leaves
+  }
+}
 
 class Tree {
-
   constructor(data) {
-    this.left = null
-    this.right = null
-    this.data = data
-    this.height = 1
+    this.nodes = []
+    this.nodes.push(new Level(1, [data]))
   }
 
-  buildTree(arg) {
+  insert(elements) {
+    // debugWriter.write(logFile, `inserting ${elements.pos} => ${elements.values}`)
+    for (let leaf = 0; leaf < this.nodes.length; leaf++) {
 
-    if (arg.pos === this.data && !(this.left && this.right)) {
-      !this.left ? this.left = new Tree(arg.value): this.right = new Tree(arg.value)
-    } else {
-      if (this.left)  this.left.buildTree(arg)
-      if (this.right) this.right.buildTree(arg)
-    }
-  }
-
-
-  heightRecur(height) {
-    if (!(this.right && this.left)) {
-      height.push(this.height)
-    }
-    if (this.left) {
-      this.left.height = 1 + this.height
-      this.left.getHeight(heights)
-    }
-    if (this.right) {
-      this.right.height = 1 + this.height
-      this.right.getHeight(heights)
+      let currentLeaf = this.nodes[leaf].leaves
+      // debugWriter.write(logFile, `current leaf = ${currentLeaf}`)
+      if (currentLeaf === elements.pos || currentLeaf.includes(elements.pos)) {
+        // debugWriter.write(logFile, `match between ${currentLeaf} + ${elements.pos}`)
+        if (this.nodes[leaf + 1]) {
+          this.nodes[leaf + 1].leaves = this.nodes[leaf + 1].leaves.concat(elements.values)
+        }
+        else this.nodes.push(new Level(this.nodes[leaf].level + 1, elements.values))
+      }
     }
 
   }
@@ -42,57 +43,44 @@ class HeightCalculator {
 
   constructor(data) {
     this.data = data
-    this.indexes = []
+    this.indexes = {}
     this.tree
   }
 
   init() {
     for (let i = 0; i < this.data.length; i++) {
-      this.data[i] === -1 ? this.tree = new Tree(parseInt(i)): this.indexes.push(new TreePos(this.data[i], i))
+      this.data[i] === -1 ? this.tree = new Tree(i): this.addToBucket(this.data[i], i)
     }
-    this.indexes.sort((a, b) => a.pos - b.pos)
+  }
+
+  addToBucket(index, value) {
+    this.indexes.hasOwnProperty(index) ? this.indexes[index].push(value) : this.indexes[index] = [value]
   }
 
   build() {
-    let current = this.tree
-    while (this.indexes.length) {
-      let next = this.indexes.find(index => index.pos === current.pos)
-      console.log(this.indexes)
-      console.log(next)
-      this.tree.buildTree(next)
-      // current = next
-      this.indexes.splice(this.indexes.indexOf(next), 1)
-      console.log(`current = ${current.pos} => ${current.data}`)
+    let queue = []
+    queue = queue.concat(this.tree.nodes[0].leaves[0])
+    while (queue.length) {
+      let current = queue.shift()
+      if (this.indexes.hasOwnProperty(current)) {
+        queue = queue.concat(this.indexes[current]) 
+        let values = this.indexes[current]
+        this.tree.insert({pos: current, values: values})
+      }
     }
-    
-  }
 
-  height() {
-    let height = [], nodes = [this.tree], max = 0
-    while (nodes.length) {
-      let current = nodes.pop()
-      if (current.left) {
-        current.left.height = 1 + current.height
-        nodes.push(current.left)
-      }
-      if (current.right) {
-        current.right.height = 1 + current.height
-        nodes.push(current.right)
-      }
-      if (max < current.height) max = current.height
-    }
-    return max
+    let builtTree = this.tree.nodes
+    debugWriter.write(logFile, "next\n")
+    for (let leaf of builtTree) debugWriter.write(logFile, `leaf => ${leaf.leaves} @ level => ${leaf.level}`)
+    debugWriter.write(logFile, "\n")
   }
 
 }
 
-class TreePos {
-  constructor(pos, value) {
-    this.data = value
-    this.pos = pos
-  }
-}
+  
+
 
 module.exports = HeightCalculator
+
 
 
