@@ -1,11 +1,8 @@
 //next incorporate assert nodejs into code rather than testing framework
 
-const DebugWriter = require('../debugWriter')
-var pairFile = 'key_value.txt', logFile = 'logs.txt'
+const DebugWriter = require('../debugWriter'), logFile = 'logs.txt'
 
 var debugWriter = new DebugWriter()
-// debugWriter.dropFile(pairFile)
-// debugWriter.dropFile(logFile)
 
 class Level {
   constructor(level = 1, leaves) {
@@ -60,6 +57,7 @@ class HeightCalculator {
   build() {
     let queue = []
     queue = queue.concat(this.tree.nodes[0].leaves[0])
+
     while (queue.length) {
       let current = queue.shift()
       if (this.indexes.hasOwnProperty(current)) {
@@ -68,11 +66,14 @@ class HeightCalculator {
         this.tree.insert({pos: current, values: values})
       }
     }
-
     let builtTree = this.tree.nodes
     debugWriter.write(logFile, "next\n")
     for (let leaf of builtTree) debugWriter.write(logFile, `leaf => ${leaf.leaves} @ level => ${leaf.level}`)
     debugWriter.write(logFile, "\n")
+  }
+
+  height() {
+    return this.tree.nodes.length
   }
 
 }
