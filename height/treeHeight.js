@@ -1,3 +1,5 @@
+/*Code*/
+
 class Level {
   constructor(leaves) {
     this.leaves = leaves
@@ -44,6 +46,7 @@ class HeightCalculator {
   }
 
   build() {
+
     let queue = []
     queue = queue.concat(this.tree.nodes[0].leaves[0])
 
@@ -65,7 +68,29 @@ class HeightCalculator {
 
 }
 
-  
+/*Submission*/
+
+var readline = require('readline')
+
+process.stdin.setEncoding('utf8')
+
+var r1 = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+
+r1.on('line', (line) => {
+  line = line.split(" ").map(int => parseInt(int))
+  if (line.length > 1) {
+    let heightCalculator = new HeightCalculator(line)
+    heightCalculator.init()
+    heightCalculator.build()
+    console.log(heightCalculator.height())
+    r1.close()
+  }
+})
 
 
 module.exports = HeightCalculator
