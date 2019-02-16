@@ -1,12 +1,5 @@
-//next incorporate assert nodejs into code rather than testing framework
-
-const DebugWriter = require('../debugWriter'), logFile = 'logs.txt'
-
-var debugWriter = new DebugWriter()
-
 class Level {
-  constructor(level = 1, leaves) {
-    this.level = level,
+  constructor(leaves) {
     this.leaves = leaves
   }
 }
@@ -14,24 +7,20 @@ class Level {
 class Tree {
   constructor(data) {
     this.nodes = []
-    this.nodes.push(new Level(1, [data]))
+    this.nodes.push(new Level([data]))
   }
 
   insert(elements) {
-    // debugWriter.write(logFile, `inserting ${elements.pos} => ${elements.values}`)
-    for (let leaf = 0; leaf < this.nodes.length; leaf++) {
-
-      let currentLeaf = this.nodes[leaf].leaves
-      // debugWriter.write(logFile, `current leaf = ${currentLeaf}`)
-      if (currentLeaf === elements.pos || currentLeaf.includes(elements.pos)) {
-        // debugWriter.write(logFile, `match between ${currentLeaf} + ${elements.pos}`)
-        if (this.nodes[leaf + 1]) {
-          this.nodes[leaf + 1].leaves = this.nodes[leaf + 1].leaves.concat(elements.values)
-        }
-        else this.nodes.push(new Level(this.nodes[leaf].level + 1, elements.values))
+    this.nodes.forEach((n, i) => {
+      if (n.leaves === elements.pos || n.leaves.includes(elements.pos)) {
+        this.insertIntoTree(elements, i + 1)
       }
-    }
+    })
+  }
 
+  insertIntoTree(el, ni) {
+    this.nodes[ni] ? 
+    this.nodes[ni].leaves = this.nodes[ni].leaves.concat(el.values) : this.nodes.push(new Level(el.values))
   }
 
 }
@@ -60,16 +49,14 @@ class HeightCalculator {
 
     while (queue.length) {
       let current = queue.shift()
+
       if (this.indexes.hasOwnProperty(current)) {
-        queue = queue.concat(this.indexes[current]) 
         let values = this.indexes[current]
+        queue = queue.concat(values)
         this.tree.insert({pos: current, values: values})
       }
+
     }
-    let builtTree = this.tree.nodes
-    debugWriter.write(logFile, "next\n")
-    for (let leaf of builtTree) debugWriter.write(logFile, `leaf => ${leaf.leaves} @ level => ${leaf.level}`)
-    debugWriter.write(logFile, "\n")
   }
 
   height() {
